@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design and structuring of distributed applications</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <h1>GET Request</h1>
+            <p>Click the button to fetch data using a GET request.</p>
+            <input type="text" id="textInputGet" placeholder="Type anything..." />
+            <button onclick="loadGetMsg()">Input</button>
+            <div id="getResult"></div>
+        </div>
+
+        <div class="box">
+            <h1>POST Request</h1>
+            <p>Click the button to submit data using a POST request.</p>
+            <input type="text" id="textInputPost" placeholder="Type anything..." />
+            <button onclick="loadPostMsg()">Input</button>
+            <div id="postResult"></div> 
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
