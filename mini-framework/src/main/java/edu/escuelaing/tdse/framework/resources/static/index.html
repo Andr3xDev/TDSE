@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miniframework</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <h1>GET Request</h1>
+            <p>Click the button to fetch data using a GET request.</p>
+            <input type="text" id="textInputGet" placeholder="Type anything..." />
+            <button onclick="loadGetMsg()">Input</button>
+            <div id="getResult"></div>
+        </div>
+
+        <div class="box">
+            <h1>POST Request</h1>
+            <p>Click the button to submit data using a POST request.</p>
+            <input type="text" id="textInputPost" placeholder="Type anything..." />
+            <button onclick="loadPostMsg()">Input</button>
+            <div id="postResult"></div> 
+        </div>
+    </div>
+    <div class="container">
+        <div class="box">
+            <h1>Hello World Get Request</h1>
+            <h3>Static Method</h3>
+            <button onclick="loadHelloMsg()">Hello</button>
+            <div id="static1"></div> 
+        </div>
+        <div class="box">
+            <h1>PI number Get Request</h1>
+            <h3>Static Method</h3>
+            <button onclick="loadPiMsg()">Numero Pi</button>
+            <div id="static2"></div> 
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
