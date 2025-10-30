@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Login - Cognito</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+    <main
+        style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:#f5f8fa;">
+        <div
+            style="background:#fff;border-radius:8px;padding:24px;box-shadow:0 6px 18px rgba(0,0,0,0.08);max-width:900px;width:100%">
+            <h1 style="margin-top:0">Acceso / Registro</h1>
+
+            <section style="display:flex;gap:30px;flex-wrap:wrap">
+                <div style="flex:1;min-width:260px">
+                    <h2>Iniciar sesión</h2>
+                    <form id="signInForm">
+                        <input type="email" id="signinEmail" placeholder="Correo electrónico" required>
+                        <input type="password" id="signinPassword" placeholder="Contraseña" required>
+                        <button type="submit">Iniciar sesión</button>
+                    </form>
+                </div>
+
+                <div style="flex:1;min-width:260px">
+                    <h2>Registrarse</h2>
+                    <form id="signUpForm">
+                        <input type="email" id="signupEmail" placeholder="Correo electrónico" required>
+                        <input type="password" id="signupPassword" placeholder="Contraseña (8+ chars)" required>
+                        <button type="submit">Crear cuenta</button>
+                    </form>
+                    <div id="confirmArea" style="margin-top:8px;display:none">
+                        <p>Ingresa el código de confirmación enviado a tu email:</p>
+                        <input type="text" id="confirmCode" placeholder="Código de confirmación">
+                        <button id="confirmBtn">Confirmar cuenta</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/amazon-cognito-identity-js@6.3.12/dist/amazon-cognito-identity.min.js"></script>
+    <script defer src="login.js"></script>
+</body>
+
+</html>

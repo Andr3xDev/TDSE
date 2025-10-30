@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Twitter-like App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav id="authArea" style="text-align:right;margin-bottom:10px"></nav>
+
+    <h1>Crear Post</h1>
+    <form id="postForm">
+        <textarea id="content" placeholder="Post (max 140 chars)" maxlength="140" required></textarea>
+        <button type="submit">Postear</button>
+    </form>
+
+    <h1>Stream Global</h1>
+    <ul id="streamList"></ul>
+
+    <!-- Cognito para manejar logout -->
+    <script src="https://unpkg.com/amazon-cognito-identity-js@6.3.12/dist/amazon-cognito-identity.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Configuración de Cognito
+        const USER_POOL_ID = 'us-east-1_iqWLwfBuk';
+        const APP_CLIENT_ID = '6bv9e50dsog1bd3oall4aentnr';
+
+        // Renderiza el área de autenticación
+        function renderAuthArea() {
+            const nav = document.getElementById('authArea');
+
+            const poolData = {
+                UserPoolId: USER_POOL_ID,
+                ClientId: APP_CLIENT_ID
+            };
+            const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+            const cognitoUser = userPool.getCurrentUser();
+
+            console.log('🔍 getCurrentUser():', cognitoUser);
+            console.log('🔍 localStorage keys:', Object.keys(localStorage));
+
+            if (cognitoUser) {
+                console.log('✅ Usuario de Cognito encontrado:', cognitoUser.getUsername());
+
+                // Obtener información del token
+                cognitoUser.getSession((err, session) => {
+                    if (err) {
+                        console.error('❌ Error obteniendo sesión:', err);
+
+                        let errorMsg = 'Error al obtener tu sesión.';
+                        if (err.code === 'NotAuthorizedException') {
+                            errorMsg = 'Tu sesión ha expirado.';
+                        }
+
+                        nav.innerHTML = `<span style="color: #e74c3c;">⚠️ ${errorMsg}</span> <button id="logoutNavBtn">Ir a Login</button>`;
+                        attachLogoutHandler();
+                        return;
+                    }
+
+                    console.log('✅ Sesión obtenida:', session);
+                    console.log('✅ Sesión válida?', session.isValid());
+
+                    if (session && session.isValid()) {
+                        cognitoUser.getUserAttributes((err, attributes) => {
+                            let username = cognitoUser.getUsername();
+
+                            if (!err && attributes) {
+                                const emailAttr = attributes.find(attr => attr.getName() === 'email');
+                                const nameAttr = attributes.find(attr => attr.getName() === 'name');
+                                const preferredUsernameAttr = attributes.find(attr => attr.getName() === 'preferred_username');
+
+                                username = (nameAttr && nameAttr.getValue()) ||
+                                    (preferredUsernameAttr && preferredUsernameAttr.getValue()) ||
+                                    (emailAttr && emailAttr.getValue()) ||
+                                    username;
+                            }
+
+                            nav.innerHTML = `<span>Hola, <strong>${username}</strong></span> <button id="logoutNavBtn">Cerrar sesión</button>`;
+                            attachLogoutHandler();
+                        });
+                    } else {
+                        // Sesión inválida
+                        nav.innerHTML = `<span style="color: #f39c12;">⚠️ Sesión expirada</span> <button id="logoutNavBtn">Ir a Login</button>`;
+                        attachLogoutHandler();
+                        alert('⚠️ Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+                    }
+                });
+            } else {
+                console.error('❌ No se encontró usuario de Cognito en localStorage');
+                console.log('🔍 Intentando usar tokens manuales del localStorage...');
+
+                // Verificar si hay tokens guardados manualmente
+                const accessToken = localStorage.getItem('accessToken');
+                const cognitoId = localStorage.getItem('cognitoId');
+                const userData = localStorage.getItem('userData');
+
+                if (accessToken && cognitoId) {
+                    console.log('✅ Tokens manuales encontrados, mostrando usuario');
+                    try {
+                        const userDataObj = userData ? JSON.parse(userData) : null;
+                        const username = userDataObj ? (userDataObj.username || userDataObj.email) : cognitoId;
+
+                        nav.innerHTML = `<span>Hola, <strong>${username}</strong></span> <button id="logoutNavBtn">Cerrar sesión</button>`;
+                        attachLogoutHandler();
+                    } catch (e) {
+                        console.error('Error parseando userData:', e);
+                        nav.innerHTML = `<span>Hola, <strong>Usuario</strong></span> <button id="logoutNavBtn">Cerrar sesión</button>`;
+                        attachLogoutHandler();
+                    }
+                } else {
+                    // Realmente no hay sesión
+                    nav.innerHTML = `<span style="color: #e74c3c;">❌ No autenticado</span>`;
+                    alert('⚠️ Debes iniciar sesión para acceder a esta página.');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                }
+            }
+        }
+
+        // Función auxiliar para adjuntar el handler de logout
+        function attachLogoutHandler() {
+            const logoutBtn = document.getElementById('logoutNavBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', handleLogout);
+            }
+        }
+
+        // Maneja el cierre de sesión: invalida tokens en Cognito y redirige al login
+        function handleLogout() {
+            try {
+                const poolData = {
+                    UserPoolId: USER_POOL_ID,
+                    ClientId: APP_CLIENT_ID
+                };
+                const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+                const cognitoUser = userPool.getCurrentUser();
+
+                if (cognitoUser) {
+                    cognitoUser.signOut();
+                    console.log('Sesión cerrada en Cognito');
+                }
+
+                // Limpia localStorage
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('id_token');
+                localStorage.removeItem('token_expires_at');
+
+                alert('✅ Sesión cerrada exitosamente.');
+
+                window.location.href = 'login.html';
+
+            } catch (error) {
+                console.error('Error al cerrar sesión:', error);
+                alert('⚠️ Hubo un problema al cerrar sesión, pero serás redirigido al login.');
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderAuthArea);
+    </script>
+</body>
+
+</html>
