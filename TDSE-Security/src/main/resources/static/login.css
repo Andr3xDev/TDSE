@@ -1,0 +1,97 @@
+@font-face {
+    font-family: 'AmericanTypewriter';
+    src: url('fonts/AmericanTypewriter.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #191724; 
+    color: #e0def4; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.box-static {
+    background-color: #1f1d2e;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4); 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 20px;
+    align-items: center;
+    height: 50vh;
+    width: 35vw;
+}
+
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #26233a; 
+    color: #e0def4; 
+}
+
+h1 {
+    color: #eb6f92; 
+    font-size: 5vh;
+    text-align: center;
+}
+
+.login-container {
+    background-color: #1f1d2e; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    width: 300px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #26233a; 
+    color: #e0def4; 
+}
+
+button {
+    background-color: #3e8fb5; 
+    color: #e0def4; 
+    border: none;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #40a0c4;
+}
+
+.error-message {
+    color: #eb6f92; 
+    font-size: 14px;
+    display: none;
+}

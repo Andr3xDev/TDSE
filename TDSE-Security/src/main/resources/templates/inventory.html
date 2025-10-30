@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Inventario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gestión de Inventario</h1>
+        
+        <div class="layout">
+            <div class="form-container">
+                <h2>Crear Nuevo Artículo</h2>
+                <form id="create-form">
+                    <input type="text" name="name" placeholder="Nombre del artículo" required>
+                    <input type="text" name="address" placeholder="Dirección/Ubicación" required>
+                    <input type="number" name="price" placeholder="Precio" required>
+                    <input type="number" name="size" placeholder="Tamaño/Cantidad" required>
+                    <input type="text" name="description" placeholder="Descripción (opcional)">
+                    <button type="submit">Crear Artículo</button>
+                </form>
+            </div>
+            
+            <div class="form-container">
+                <h2>Buscar Artículos</h2>
+                <form id="search-form">
+                    <input type="text" name="name" placeholder="Filtrar por nombre">
+                    <input type="text" name="address" placeholder="Filtrar por dirección">
+                    <input type="number" name="maxPrice" placeholder="Precio máximo">
+                    <input type="number" name="minSize" placeholder="Tamaño mínimo">
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <h2>Actualizar Artículo</h2>
+                <form id="update-form">
+                    <input type="text" id="update-id" name="id" placeholder="ID del artículo" readonly required>
+                    <input type="text" id="update-name" name="name" placeholder="Nuevo nombre">
+                    <input type="text" id="update-address" name="address" placeholder="Nueva dirección">
+                    <input type="number" id="update-price" name="price" placeholder="Nuevo precio">
+                    <input type="number" id="update-size" name="size" placeholder="Nuevo tamaño">
+                    <input type="text" id="update-description" name="description" placeholder="Nueva descripción">
+                    <button type="submit">Actualizar Artículo</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <h2>Eliminar Artículo</h2>
+                <form id="delete-form">
+                    <input type="text" id="delete-id" name="id" placeholder="ID del artículo a eliminar" readonly required>
+                    <button type="submit" class="btn-delete">Eliminar Artículo</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="message-area"></div>
+
+        <h2>Resultados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Precio</th>
+                    <th>Tamaño</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="results-table-body">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="dataFetch.js" defer></script>
+</body>
+</html>
